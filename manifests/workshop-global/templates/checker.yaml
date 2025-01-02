@@ -19,10 +19,30 @@ spec:
     spec:
       containers:
       - name: checker
-        image: skabrits/checker
+        image: skabrits/checker:0.1.0
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: "config"
+          mountPath: /app/endpoint.txt
+          subpath: endpoint.txt
+        - name: "config"
+          mountPath: /app/names.txt
+          subpath: names.txt
       serviceAccountName: checker-sa
+      volumes:
+      - name: "config"
+        configMap:
+          name: "checker-config-cm"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: checker-config-cm
+data:
+{{ (.Files.Glob "**.txt").AsConfig | indent 2 }}
+  endpoint.txt: |-
+    {{ .Values.host }}
 ---
 apiVersion: v1
 kind: Service

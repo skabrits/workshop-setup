@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<head>
+<title>Winner</title>
+<meta charset="UTF-8"></meta>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+
+<body>
+
+{template}
+
+</body>
+<script>
+$(document).ready(function(){
+    //alert("Workshop Dashboard")
+});
+</script>
