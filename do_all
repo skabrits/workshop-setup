@@ -5,6 +5,8 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 
 counter=0
 
+kubectl create ns workshop
+
 helm upgrade --install nyws "$SCRIPTPATH/manifests/workshop-global" -f values-glob.yaml
 
 lb="$(cat $SCRIPTPATH/values-glob.yaml | yq ".host")"
@@ -27,9 +29,9 @@ do
 
   echo "ssh -o ServerAliveInterval=60 -p ${user_port} admin@${NLB_EP}" > "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
   echo "user: admin, password: ${password}, namespace: ${user}" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
-  echo "AWS endpoint: ${lb}" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
+  echo "Applications endpoint: ${lb}" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
   echo "-----------------------------------------------------------" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
-  echo -e "Docker registry: \n\nuser: AWS, \n\npassword: $(cat $SCRIPTPATH/tmp_ecr_cred), \n\nimage name: $(cat $SCRIPTPATH/tmp_ecr)" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
+  echo -e "Docker registry: \n\nuser: admin, \n\npassword: admin, \n\nimage name: <your registry>/test-app" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
   echo "-----------------------------------------------------------" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
   echo "Runbook Part I: https://github.com/skabrits/Kubernetes-workshop/blob/master/documentation/Part%20I/README.md" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
   echo "Runbook Part II: https://github.com/skabrits/Kubernetes-workshop/blob/master/documentation/Part%20II/README.md" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
