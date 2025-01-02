@@ -9,4 +9,3 @@ do
   user="${i}"
   helm uninstall nyws-user-${user}
 done
-kubectl delete ns workshop

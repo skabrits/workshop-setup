@@ -5,8 +5,6 @@ SCRIPTPATH=$(dirname "$SCRIPT")
 
 counter=0
 
-kubectl create ns workshop
-
 helm upgrade --install nyws "$SCRIPTPATH/manifests/workshop-global" -f values-glob.yaml
 
 lb="$(cat $SCRIPTPATH/values-glob.yaml | yq ".host")"
