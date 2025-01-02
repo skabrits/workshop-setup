@@ -25,10 +25,10 @@ spec:
         volumeMounts:
         - name: "config"
           mountPath: /app/endpoint.txt
-          subpath: endpoint.txt
+          subPath: endpoint.txt
         - name: "config"
           mountPath: /app/names.txt
-          subpath: names.txt
+          subPath: names.txt
       serviceAccountName: checker-sa
       volumes:
       - name: "config"
