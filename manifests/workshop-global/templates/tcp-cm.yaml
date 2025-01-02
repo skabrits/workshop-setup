@@ -1,6 +1,6 @@
 {{- $startPort := .Values.startPort -}}
 {{- $basenamespace := .Values.basenamespace -}}
-{{- $podPort := .Values.podPort -}}
+{{- $svcPort := .Values.svcPort -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,6 +8,6 @@ metadata:
   namespace: ingress-nginx
 data:
   {{- range $i, $value := (.Files.Lines "users.txt") }}
-  {{ add $startPort $i }}: "{{ $basenamespace }}/workhorse-svc-{{ $value }}:{{ $podPort }}"
+  {{ add $startPort $i }}: "{{ $basenamespace }}/workhorse-svc-{{ $value }}:{{ $svcPort }}"
   {{- end }}
   

@@ -22,7 +22,7 @@ spec:
       - name: workhorse
         image: skabrits/workhorse
         ports:
-        - containerPort: {{ .Values.user.port }}
+        - containerPort: {{ .Values.user.podPort }}
         env:
         - name: SUDO_ACCESS
           value: "true"
