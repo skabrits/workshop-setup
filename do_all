@@ -11,6 +11,10 @@ lb="$(cat $SCRIPTPATH/values-glob.yaml | yq ".host")"
 ssh_node="$(cat $SCRIPTPATH/values-glob.yaml | yq ".host")"
 start_port="$(cat $SCRIPTPATH/values-glob.yaml | yq ".startPort")"
 
+registry_user="$(cat $SCRIPTPATH/values-user.yaml | yq ".registry.user")"
+registry_password="$(cat $SCRIPTPATH/values-user.yaml | yq ".registry.password")"
+registry_repository="$(cat $SCRIPTPATH/values-user.yaml | yq ".registry.repository")"
+
 echo "$ssh_node"
 echo "$NLB_EP"
 
@@ -29,7 +33,7 @@ do
   echo "user: admin, password: ${password}, namespace: ${user}" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
   echo "Applications endpoint: ${lb}" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
   echo "-----------------------------------------------------------" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
-  echo -e "Docker registry: \n\nuser: admin, \n\npassword: admin, \n\nimage name: <your registry>/test-app" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
+  echo -e "Docker registry: \n\nuser: ${registry_user}, \n\npassword: ${registry_password}, \n\nimage name: ${registry_repository}/test-app" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
   echo "-----------------------------------------------------------" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
   echo "Runbook Part I: https://github.com/skabrits/Kubernetes-workshop/blob/master/documentation/Part%20I/README.md" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
   echo "Runbook Part II: https://github.com/skabrits/Kubernetes-workshop/blob/master/documentation/Part%20II/README.md" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
