@@ -1,0 +1,4 @@
+basenamespace: workshop
+startPort: 3000
+podPort: 22
+host: example.com

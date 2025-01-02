@@ -1,0 +1,125 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Values.user.name }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workhorse-{{ .Values.user.name }}
+  namespace: {{ .Values.basenamespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workhorse-{{ .Values.user.name }}
+  template:
+    metadata:
+      labels:
+        app: workhorse-{{ .Values.user.name }}
+    spec:
+      containers:
+      - name: workhorse
+        image: skabrits/workhorse
+        ports:
+        - containerPort: {{ .Values.user.port }}
+        env:
+        - name: SUDO_ACCESS
+          value: "true"
+        - name: USER_NAME
+          value: admin
+        - name: PASSWORD_ACCESS
+          value: "true"
+        - name: USER_PASSWORD
+          value: {{ .Values.user.password }}
+        - name: DOCKER_HOST
+          value: tcp://localhost:2375
+        - name: SSH_PORT
+          value: "{{ .Values.user.podPort }}"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /configuration
+        - name: config-reg-volume
+          mountPath: /configuration_region
+        - name: pvolume
+          mountPath: /config
+        - name: config-init-volume
+          mountPath: /custom-cont-init.d
+          readOnly: true
+      - name: dind-daemon 
+        image: docker:24.0-dind 
+        command: ["/bin/sh"]
+        args: ["-c", "dockerd --host=unix:///var/run/docker.sock --host=tcp://0.0.0.0:2375 --storage-driver=vfs --insecure-registry lscr.io --log-opt max-size=50m"]
+        securityContext: 
+            privileged: true 
+        volumeMounts: 
+        - name: docker-graph-storage 
+          mountPath: /var/lib/docker
+        - name: pvolume
+          mountPath: /config
+          readOnly: true
+        resources:
+          limits:
+            ephemeral-storage: "35Gi"
+      serviceAccountName: {{ .Values.user.name }}-sa
+      volumes: 
+      - name: docker-graph-storage 
+        emptyDir: {}
+      - name: config-volume
+        configMap:
+          name: workhorse-cm-{{ .Values.user.name }}
+      - name: config-reg-volume
+        configMap:
+          name: workhorse-cm-reg-{{ .Values.user.name }}
+      - name: config-init-volume
+        configMap:
+          name: workhorse-cm-init
+      - name: pvolume
+        persistentVolumeClaim:
+          claimName: workhorse-pvc-{{ .Values.user.name }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: workhorse-svc-{{ .Values.user.name }}
+  namespace: {{ .Values.basenamespace }}
+spec:
+  type: ClusterIP
+  selector:
+    app: workhorse-{{ .Values.user.name }}
+  ports:
+  - protocol: TCP
+    port: {{ .Values.user.port }}
+    targetPort: {{ .Values.user.podPort }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: workhorse-cm-{{ .Values.user.name }}
+  namespace: {{ .Values.basenamespace }}
+data:
+  namespace.txt: |
+    {{ .Values.user.name }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: workhorse-cm-reg-{{ .Values.user.name }}
+  namespace: {{ .Values.basenamespace }}
+data:
+  region.txt: |
+    Siberia
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: workhorse-pvc-{{ .Values.user.name }}
+  namespace: {{ .Values.basenamespace }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 512Mi
+  storageClassName: longhorn

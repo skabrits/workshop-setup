@@ -1,0 +1,53 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ .Values.user.name }}
+  namespace: {{ .Values.user.name }}
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ .Values.user.name }}-rb
+  namespace: {{ .Values.user.name }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.user.name }}-sa
+    namespace: {{ .Values.basenamespace }}
+roleRef:
+  kind: Role
+  name: {{ .Values.user.name }}
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Values.user.name }}-watch-rb
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.user.name }}-sa
+    namespace: {{ .Values.basenamespace }}
+roleRef:
+  kind: ClusterRole
+  name: user-watch
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.user.name }}-sa
+  namespace: {{ .Values.basenamespace }}
+secrets:
+  - name: {{ .Values.user.name }}-secret
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.user.name }}-secret
+  namespace: {{ .Values.basenamespace }}
+  annotations:
+    kubernetes.io/service-account.name: {{ .Values.user.name }}-sa
+type: kubernetes.io/service-account-token

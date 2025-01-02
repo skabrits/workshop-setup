@@ -1,0 +1,47 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: checker
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: checker-rb
+subjects:
+  - kind: ServiceAccount
+    name: checker-sa
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: checker
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: checker-sa
+  namespace: default
+secrets:
+  - name: checker-secret
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: checker-secret
+  namespace: default
+  annotations:
+    kubernetes.io/service-account.name: checker-sa
+type: kubernetes.io/service-account-token
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: user-watch
+rules:
+  - apiGroups: [""]
+    resources: ["namespaces", "nodes"]
+    verbs: ["get", "list", "watch"]

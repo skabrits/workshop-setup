@@ -1,0 +1,11 @@
+#!/bin/bash
+
+SCRIPT=$(readlink -f "$0")
+SCRIPTPATH=$(dirname "$SCRIPT")
+
+helm uninstall nyws
+for i in $(cat $SCRIPTPATH/manifests/workshop-global/users.txt)
+do
+  user="${i}"
+  helm uninstall nyws-user-${user}
+done

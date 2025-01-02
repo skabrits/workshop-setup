@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-server
+  namespace: {{ .Values.user.name }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: web-server
+        image: skabrits/trickster # HINT: check https://hub.docker.com/r/skabrits/trickster/tags repository to see available tags
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: db-password-secret
+          mountPath: /app/db-creds
+          readOnly: true
+        envFrom:
+        - configMapRef:
+            name: env-vars
+      volumes:
+      - name: db-password-secret
+        secret:
+          secretName: db-password # HINT: this secret should store configs for database with fields `key: testuser123`
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-server-svc
+  namespace: {{ .Values.user.name }}
+spec:
+  selector:
+    app: web-server
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 80
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-vars
+  namespace: {{ .Values.user.name }}
+data:
+  LOG_LEVEL: info
+  LOG_PATH: /var/log/log_file

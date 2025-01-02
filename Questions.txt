@@ -1,0 +1,18 @@
+1. How docker container is different from VM?
+2. When should you use headless service and why?
+3. What is the best way to expose service on www and why? (ask why service type LoadBalancer is worse than ingress)
+4. How service loadbalancing is implemented?
+5. Why would you need replicaset if there is a deployment?
+6. How in-cluster dns works?
+7. If you have a pod failing to start how would you try to debug it?
+8. How would you decide whether to use deployment or statefulset?
+9. Is there any usecase when configmap cannot be used instead of secret?
+10. What is the difference between deployment pod creation strategy and default statefulset pod creation strategy?
+11. Imagine service not loadbalancing to pods. What might be the cause?
+12. Why would you use helm?
+13. What are the possible ways to pass values to helm?
+14. What are the ways to configure the pod?
+15. What components working ingress consists of?
+16. Why would you use kubernetes?
+17. Imagine you have an ML docker container that requires GPU to run and several nodes with GPU, whereas others -- without. How would you deploy this container to cluster?
+18. What application Alice wanted to run with kubernetes?

@@ -1,0 +1,8 @@
+basenamespace: workshop
+
+user:
+  name: admin
+  password: admin
+  port: 22
+  podPort: 22
+  

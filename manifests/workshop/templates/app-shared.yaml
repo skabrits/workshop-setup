@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: workhorse-cm-init
+  namespace: {{ .Values.basenamespace }}
+data:
+  init.sh: |
+    sed -i "s/$(cat /etc/ssh/sshd_config | grep "^Port ")/Port ${SSH_PORT}/g" /etc/ssh/sshd_config
+    sleep 120
+    docker pull linuxserver/webtop:ubuntu-kde

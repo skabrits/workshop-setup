@@ -1,0 +1,4 @@
+basenamespace: workshop
+
+user:
+  podPort: 22
