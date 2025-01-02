@@ -16,7 +16,6 @@ registry_password="$(cat $SCRIPTPATH/values-user.yaml | yq ".registry.password")
 registry_repository="$(cat $SCRIPTPATH/values-user.yaml | yq ".registry.repository")"
 
 echo "$ssh_node"
-echo "$NLB_EP"
 
 for i in $(cat $SCRIPTPATH/manifests/workshop-global/users.txt)
 do
@@ -29,7 +28,7 @@ do
 
   mkdir -p "$SCRIPTPATH/manifests/configs"
 
-  echo "ssh -o ServerAliveInterval=60 -p ${user_port} admin@${NLB_EP}" > "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
+  echo "ssh -o ServerAliveInterval=60 -p ${user_port} admin@${ssh_node}" > "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
   echo "user: admin, password: ${password}, namespace: ${user}" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
   echo "Applications endpoint: ${lb}" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
   echo "-----------------------------------------------------------" >> "$SCRIPTPATH/manifests/configs/creds-${user}.txt"
