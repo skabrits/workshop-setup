@@ -6,3 +6,8 @@ user:
   port: 22
   podPort: 22
   
+registry:
+  user: admin
+  password: admin
+  repository: example.com
+  

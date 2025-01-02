@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: workhorse
-        image: skabrits/workhorse
+        image: skabrits/workhorse:0.1.0
         ports:
         - containerPort: {{ .Values.user.podPort }}
         env:
@@ -36,6 +36,12 @@ spec:
           value: tcp://localhost:2375
         - name: SSH_PORT
           value: "{{ .Values.user.podPort }}"
+        - name: REGISTRY_USER
+          value: {{ .Values.registry.user }}
+        - name: REGISTRY_PASSWORD
+          value: {{ .Values.registry.password }}
+        - name: REGISTRY_REPOSITORY
+          value: {{ .Values.registry.repository }}
         volumeMounts:
         - name: config-volume
           mountPath: /configuration
