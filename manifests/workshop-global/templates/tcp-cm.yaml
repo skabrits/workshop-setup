@@ -5,7 +5,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: tcp-services
-  namespace: default
+  namespace: ingress-nginx
 data:
   {{- range $i, $value := (.Files.Lines "users.txt") }}
   {{ add $startPort $i }}: "{{ $basenamespace }}/workhorse-svc-{{ $value }}:{{ $svcPort }}"
