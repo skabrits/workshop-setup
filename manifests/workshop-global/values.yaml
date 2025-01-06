@@ -1,4 +1,3 @@
 basenamespace: workshop
-startPort: 3000
 svcPort: 22
 host: example.com
