@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: workhorse
-        image: skabrits/workhorse:0.1.0
+        image: skabrits/workhorse:0.1.1
         ports:
         - containerPort: {{ .Values.user.podPort }}
         env:

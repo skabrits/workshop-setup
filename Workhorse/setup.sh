@@ -16,7 +16,7 @@ export POD_NAMESPACE=${namespace}
 git clone "https://github.com/skabrits/Kubernetes-workshop.git" /config/workshop 2>/dev/null || true
 
 cowsay "I love K8S ❤️"
-echo "Your ECR credentials for docker are:"
-echo "user: ${REGISTRY_USER}"
-echo "password: ${REGISTRY_PASSWORD}"
-echo "image repository: ${REGISTRY_REPOSITORY}"
+echo "Your registry credentials for docker are:"
+echo "user: $(cat /etc/prepare/reg_user.txt)"
+echo "password: $(cat /etc/prepare/reg_pwd.txt)"
+echo "image repository: $(cat /etc/prepare/reg_repo.txt)"

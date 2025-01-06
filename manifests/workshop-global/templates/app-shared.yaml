@@ -8,3 +8,6 @@ data:
     sed -i "s/$(cat /etc/ssh/sshd_config | grep "^Port ")/Port ${SSH_PORT}/g" /etc/ssh/sshd_config
     sleep 120
     docker pull linuxserver/webtop:ubuntu-kde
+    echo "${REGISTRY_USER}" > /etc/prepare/reg_user.txt
+    echo "${REGISTRY_PASSWORD}" > /etc/prepare/reg_pwd.txt
+    echo "${REGISTRY_REPOSITORY}" > /etc/prepare/reg_repo.txt

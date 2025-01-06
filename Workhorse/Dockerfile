@@ -25,7 +25,12 @@ RUN chmod +x /etc/profile.d/setup_kube.sh
 RUN mkdir -p /configuration
 RUN mkdir -p /configuration_region
 RUN echo "default" > /configuration/namespace.txt
-RUN echo "us-east-1" > /configuration_region/region.txt
+RUN echo "Siberia" > /configuration_region/region.txt
+
+RUN mkdir -p /etc/prepare
+RUN echo "admin" > /etc/prepare/reg_user.txt
+RUN echo "admin" > /etc/prepare/reg_pwd.txt
+RUN echo "example.com" > /etc/prepare/reg_repo.txt
 
 ENV SSH_PORT=2223
 
