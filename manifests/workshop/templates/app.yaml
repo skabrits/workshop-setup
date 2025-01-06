@@ -10,6 +10,8 @@ metadata:
   namespace: {{ .Values.basenamespace }}
 spec:
   replicas: 1
+  strategy:
+   type: Recreate
   selector:
     matchLabels:
       app: workhorse-{{ .Values.user.name }}
@@ -66,7 +68,9 @@ spec:
           readOnly: true
         resources:
           limits:
-            ephemeral-storage: "35Gi"
+            ephemeral-storage: "60Gi"
+          requests:
+            ephemeral-storage: "40Gi"
       serviceAccountName: {{ .Values.user.name }}-sa
       volumes: 
       - name: docker-graph-storage 
