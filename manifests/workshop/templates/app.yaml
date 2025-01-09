@@ -94,7 +94,7 @@ metadata:
   name: workhorse-svc-{{ .Values.user.name }}
   namespace: {{ .Values.basenamespace }}
   labels:
-    ingress-nginx-ports: 1
+    ingress-nginx-ports: "1"
   annotations:
     ingress-nginx-ports.tcp-ports: "{{ .Values.user.externalPort }}:{{ .Values.user.port }}"
 spec:
