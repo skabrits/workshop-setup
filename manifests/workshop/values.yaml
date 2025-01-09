@@ -3,6 +3,7 @@ basenamespace: workshop
 user:
   name: admin
   password: admin
+  externalPort: 3000
   port: 22
   podPort: 22
   

@@ -93,6 +93,10 @@ kind: Service
 metadata:
   name: workhorse-svc-{{ .Values.user.name }}
   namespace: {{ .Values.basenamespace }}
+  labels:
+    ingress-nginx-ports: 1
+  annotations:
+    ingress-nginx-ports.tcp-ports: {{ .Values.user.externalPort }}
 spec:
   type: ClusterIP
   selector:

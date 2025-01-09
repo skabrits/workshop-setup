@@ -24,7 +24,7 @@ do
   export LC_ALL=C
   password="$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13 ; echo '')"
   
-  helm upgrade --install nyws-user-${user} "$SCRIPTPATH/manifests/workshop" -f values-user.yaml --set "user.name=${user}" --set "user.password=${password}"
+  helm upgrade --install nyws-user-${user} "$SCRIPTPATH/manifests/workshop" -f values-user.yaml --set "user.name=${user}" --set "user.password=${password}" --set "user.externalPort=${user_port}"
 
   mkdir -p "$SCRIPTPATH/manifests/configs"
 
