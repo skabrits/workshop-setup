@@ -9,7 +9,7 @@ helm upgrade --install nyws "$SCRIPTPATH/manifests/workshop-global" -f values-gl
 
 lb="$(cat $SCRIPTPATH/values-glob.yaml | yq ".host")"
 ssh_node="$(cat $SCRIPTPATH/values-glob.yaml | yq ".host")"
-start_port="$(cat $SCRIPTPATH/values-glob.yaml | yq ".startPort")"
+start_port=12000
 
 registry_user="$(cat $SCRIPTPATH/values-user.yaml | yq ".registry.user")"
 registry_password="$(cat $SCRIPTPATH/values-user.yaml | yq ".registry.password")"
